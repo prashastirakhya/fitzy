@@ -27,7 +27,8 @@ exports.handler = async (event) => {
     });
     const data = await res.json();
 const raw = data.choices?.[0]?.message?.content || '';
-const text = raw.replace(/```json|```/g, '').trim();    return {
+const text = raw.replace(/```json|```/g, '').trim();    
+    return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
