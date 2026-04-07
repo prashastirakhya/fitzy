@@ -28,7 +28,7 @@ exports.handler = async (event) => {
     });
 
     const data = await res.json();
-    const text = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+    const text = data.error ? JSON.stringify(data.error) : (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
 
     return {
       statusCode: 200,
