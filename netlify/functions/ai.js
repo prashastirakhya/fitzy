@@ -1,6 +1,4 @@
 exports.handler = async (event) => {
-  const GEMINI_KEY = 'AIzaSyB--Bmw13NJytWEOlbzEtIxuojpzF7PtoU';
-
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -15,23 +13,20 @@ exports.handler = async (event) => {
 
   try {
     const { prompt } = JSON.parse(event.body);
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+        'HTTP-Referer': 'https://dazzling-swan-3710f6.netlify.app'
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+        model: 'mistralai/mistral-7b-instruct:free',
+        messages: [{ role: 'user', content: prompt }]
       })
     });
     const data = await res.json();
-    if (!res.ok) {
-      return {
-        statusCode: res.status,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: data.error?.message || 'API error' })
-      };
-    }
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.choices?.[0]?.message?.content || '';
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
