@@ -13,21 +13,21 @@ exports.handler = async (event) => {
 
   try {
     const { prompt } = JSON.parse(event.body);
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
-        'HTTP-Referer': 'https://dazzling-swan-3710f6.netlify.app'
+        'x-api-key': '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',
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
     const data = await res.json();
-const raw = data.choices?.[0]?.message?.content || '';
-const text = raw.replace(/```json|```/g, '').trim();    
+    const text = data.content?.[0]?.text || '';
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
