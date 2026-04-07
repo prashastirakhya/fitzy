@@ -29,6 +29,7 @@ exports.handler = async (event) => {
 
     const data = await res.json();
     const text = data.error ? JSON.stringify(data.error) : (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+console.log('RESPONSE TEXT:', text.substring(0, 500));
 
     return {
       statusCode: 200,
