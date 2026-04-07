@@ -21,7 +21,7 @@ exports.handler = async (event) => {
         'HTTP-Referer': 'https://dazzling-swan-3710f6.netlify.app'
       },
       body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct:free',
+        model: 'google/gemma-3-4b-it:free',
         messages: [{ role: 'user', content: prompt }]
       })
     });
